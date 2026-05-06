@@ -1,9 +1,12 @@
 import os
+import pickle
+import re
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma 
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.documents import Document
 import prompts
 import build_chroma as chroma_config 
 
@@ -118,9 +121,9 @@ class CURTRagPipeline:
         """
         Initialize the RAG pipeline using configuration from build_chroma.py
         """
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-5.4-mini", temperature=0)
         #query expansioin using prompts.py
-        self.expansion_llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3)
+        self.expansion_llm = ChatOpenAI(model="gpt-5.4-mini", temperature=0.3)
         #for reranking
         self.cohere_client = None
         if cohere and os.getenv("COHERE_API_KEY"):
@@ -146,6 +149,7 @@ class CURTRagPipeline:
         )
         
         self.retriever = self.vector_db.as_retriever(search_kwargs={"k": 6})  #top 6 most relevant chunks
+        self.bm25_data = self._load_bm25_index()
 
         self._init_chains()
 
@@ -175,6 +179,78 @@ class CURTRagPipeline:
             | self.llm 
             | StrOutputParser()
         )
+
+    def _load_bm25_index(self):
+        """Load the BM25 sparse index created by build_chroma.py."""
+        bm25_path = chroma_config.BM25_PATH
+        if not bm25_path.exists():
+            print(f"BM25 index not found at {bm25_path}; hybrid retrieval will fall back to dense only.")
+            return None
+
+        try:
+            with open(bm25_path, "rb") as f:
+                return pickle.load(f)
+        except Exception as e:
+            print(f"Failed to load BM25 index: {e}")
+            return None
+
+    def _tokenize_query(self, query: str) -> List[str]:
+        """Tokenize a query for BM25 scoring."""
+        return re.findall(r"\w+", query.lower())
+
+    def hybrid_search(self, query: str, n_results: int = 5, fetch_k: int = 20) -> List[Document]:
+        """
+        Hybrid retrieval: dense Chroma + sparse BM25 fused with RRF.
+
+        fetch_k = how many candidates each retriever fetches before fusion
+        n_results = how many final chunks to return to the LLM
+        """
+        dense_results = self.vector_db.similarity_search_with_score(query, k=fetch_k)
+        dense_docs = [doc for doc, _ in dense_results]
+        dense_ids = [doc.metadata.get("chunk_id", i) for i, doc in enumerate(dense_docs)]
+
+        if not self.bm25_data:
+            return dense_docs[:n_results]
+
+        bm25 = self.bm25_data["bm25"]
+        corpus_texts = self.bm25_data["corpus_texts"]
+        metadatas = self.bm25_data["metadatas"]
+
+        tokenized_query = self._tokenize_query(query)
+        bm25_scores = bm25.get_scores(tokenized_query)
+        sparse_ids_sorted = sorted(
+            range(len(corpus_texts)),
+            key=lambda i: bm25_scores[i],
+            reverse=True
+        )[:fetch_k]
+
+        fused_ids = rrf_fusion(dense_ids, sparse_ids_sorted)[:n_results]
+
+        dense_by_id = {
+            doc.metadata.get("chunk_id", i): doc
+            for i, doc in enumerate(dense_docs)
+        }
+
+        final_chunks = []
+        seen_texts = set()
+
+        for fid in fused_ids:
+            if fid in dense_by_id:
+                doc = dense_by_id[fid]
+            else:
+                if fid >= len(corpus_texts):
+                    continue
+                doc = Document(
+                    page_content=corpus_texts[fid],
+                    metadata=metadatas[fid],
+                )
+
+            if doc.page_content not in seen_texts:
+                seen_texts.add(doc.page_content)
+                final_chunks.append(doc)
+
+        return final_chunks or dense_docs[:n_results]
+
     def _rerank_with_cohere(self, query: str, documents: List, top_n: int = 5) -> List:
         """Rerank documents using Cohere's reranking API."""
         if not documents:
@@ -207,6 +283,31 @@ class CURTRagPipeline:
         except Exception as e:
             print(f"Cohere reranking failed: {e}")
             return documents[:top_n]
+
+    def _compress_documents(self, query: str, documents: List[Document]) -> List[Document]:
+        """Compress retrieved chunks down to only the sentences relevant to the query."""
+        if not documents:
+            return []
+
+        compressed_docs: List[Document] = []
+
+        for doc in documents:
+            compressed_text = self.compression_chain.invoke({
+                "query": query,
+                "chunk_text": doc.page_content,
+            }).strip()
+
+            if not compressed_text or compressed_text.upper() == "NO_RELEVANT_CONTENT":
+                continue
+
+            compressed_docs.append(
+                Document(
+                    page_content=compressed_text,
+                    metadata=dict(doc.metadata),
+                )
+            )
+
+        return compressed_docs
         
     def run(self, query: str, chat_history: List[Dict] = []) -> Dict[str, Any]:
         
@@ -220,7 +321,7 @@ class CURTRagPipeline:
         print(f"Expanded Query: '{expanded_query}'")
 
         # Retrieval 
-        raw_docs = self.retriever.invoke(expanded_query)
+        raw_docs = self.hybrid_search(expanded_query, n_results=10, fetch_k=20)
         #print(f"Retrieved {len(raw_docs)} raw documents")
         
         if not raw_docs:
@@ -228,7 +329,13 @@ class CURTRagPipeline:
 
         #Reranking using cohere
         valid_docs = self._rerank_with_cohere(query, raw_docs, top_n=5)
-        compressed_context = "\n\n".join([doc.page_content for doc in valid_docs])
+        compressed_docs = self._compress_documents(query, valid_docs)
+
+        if not compressed_docs:
+            print("Compression removed all retrieved content; falling back to reranked chunks.")
+            compressed_docs = valid_docs
+
+        compressed_context = "\n\n".join([doc.page_content for doc in compressed_docs])
             
         # Generation
         formatted_history = prompts.format_chat_history(chat_history)
@@ -250,11 +357,11 @@ class CURTRagPipeline:
         if check_result.strip().upper().startswith("HALLUCINATION"):
             answer += "\n\n*(Note: I verified this answer against my database and found some parts might not be explicitly supported. Please verify with official team documents.)*"
 
-        final_response = prompts.enhance_response_with_sources(answer, valid_docs)
+        final_response = prompts.enhance_response_with_sources(answer, compressed_docs)
         return {
             "answer": final_response,
             "raw_answer": answer,
-            "sources": valid_docs,
+            "sources": compressed_docs,
             "expanded_query": expanded_query,
             "status": "success"
         }
@@ -267,6 +374,16 @@ def take_input(input):
 def get_rulebook_test_inputs() -> List[str]:
     """Return ready-made user inputs derived from the rulebook."""
     return [case["query"] for case in RULEBOOK_TEST_CASES]
+
+
+def rrf_fusion(dense_ids, sparse_ids, k=60):
+    """Reciprocal Rank Fusion merges ranked lists by rank position."""
+    scores = {}
+    for rank, doc_id in enumerate(dense_ids):
+        scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank + 1)
+    for rank, doc_id in enumerate(sparse_ids):
+        scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank + 1)
+    return sorted(scores, key=scores.get, reverse=True)
 
 
 def run_rulebook_test_suite(pipeline: CURTRagPipeline) -> None:

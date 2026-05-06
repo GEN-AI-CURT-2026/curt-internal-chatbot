@@ -18,6 +18,7 @@ Your task: Rewrite the user's question to be more specific and searchable while 
 Guidelines:
 - Expand abbreviations for example: "team" is expanded into "CURT team members, structure, roles")
 - Add relevant context keywords
+- Preserve exact rule numbers, section names, and quoted phrases
 - Keep it concise (1-2 sentences maximum)
 - If the query is already specific, return it unchanged
 
@@ -39,7 +40,7 @@ Guidelines:
 4. Be friendly, professional, and enthusiastic about CURT
 5. If you mention achievements, dates, or specific facts, ensure they come directly from the context
 6. Use conversation history to maintain context, but don't make assumptions
-7.  You must output whether an update is valid or invalid, provide a strong justification, and cite the exact source section.
+7. You must output whether an update is valid or invalid, provide a strong justification, and cite the exact source section.
 
 Context from CURT Knowledge Base:
 {context}"""),
@@ -52,7 +53,7 @@ Context from CURT Knowledge Base:
 #Reranking re orders chunks based on relevance to the query
 compression_template = PromptTemplate(
     input_variables=["query", "chunk_text"],
-    template="""Extract ONLY the sentences from the text below that are relevant to answering the question. 
+    template="""Extract ONLY the sentences from the text below that are relevant to answering the question. Preserve exact rule numbers, section names, and key technical terms.
 
 If no sentences are relevant, respond with "NO_RELEVANT_CONTENT".
 

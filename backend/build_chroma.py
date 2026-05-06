@@ -1,15 +1,21 @@
 import os
+import pickle
+import re
 from pathlib import Path
 from dotenv import load_dotenv
 from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from rank_bm25 import BM25Okapi
 
 load_dotenv()
 
-DATA_DIR = Path("data")
-CHROMA_DIR = Path("backend/chroma")
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+DATA_DIR = PROJECT_ROOT / "data"
+CHROMA_DIR = BASE_DIR / "chroma"
+BM25_PATH = BASE_DIR / "bm25_index.pkl"
 EMBEDDING_MODEL = "text-embedding-3-large"
 CHUNK_SIZE = 700 
 CHUNK_OVERLAP = 100 
@@ -39,32 +45,6 @@ class ChromaDBBuilder:
         print("Step 1: Loading documents with LangChain...")
         
         all_documents = []
-        
-        try:
-            md_loader = DirectoryLoader(
-                str(DATA_DIR),
-                glob="**/*.md",
-                loader_cls=TextLoader,
-                loader_kwargs={"encoding": "utf-8"}
-            )
-            md_docs = md_loader.load()
-            all_documents.extend(md_docs)
-            print(f"Loaded {len(md_docs)} markdown files")
-        except Exception as e:
-            print(f"Note: {e}")
-        
-        try:
-            txt_loader = DirectoryLoader(
-                str(DATA_DIR),
-                glob="**/*.txt",
-                loader_cls=TextLoader,
-                loader_kwargs={"encoding": "utf-8"}
-            )
-            txt_docs = txt_loader.load()
-            all_documents.extend(txt_docs)
-            print(f"Loaded {len(txt_docs)} text files")
-        except Exception as e:
-            print(f"Note: {e}")
             
         try:
             pdf_loader = DirectoryLoader(
@@ -100,6 +80,9 @@ class ChromaDBBuilder:
         print("Step 2: Chunking documents with LangChain...")
         
         chunks = self.text_splitter.split_documents(documents)
+
+        for idx, chunk in enumerate(chunks):
+            chunk.metadata["chunk_id"] = idx
 
         print(f" Created {len(chunks)} chunks")
  
@@ -148,6 +131,21 @@ class ChromaDBBuilder:
             collection_name=COLLECTION_NAME,
             collection_metadata={"description": "CURT Racing Team knowledge base"}
         )
+        
+        print("  Building BM25 sparse index...")
+        corpus_texts = [chunk.page_content for chunk in chunks]
+        tokenized_corpus = [re.findall(r"\w+", text.lower()) for text in corpus_texts]
+        bm25 = BM25Okapi(tokenized_corpus)
+
+        BM25_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(BM25_PATH, "wb") as f:
+            pickle.dump({
+                "bm25": bm25,
+                "corpus_texts": corpus_texts,
+                "metadatas": [chunk.metadata for chunk in chunks]
+            }, f)
+
+        print(f"  BM25 index saved to {BM25_PATH}")
         
         print(f"Created collection: {COLLECTION_NAME}")
         print(f"Generated and stored {len(chunks)} embeddings\n")
