@@ -31,7 +31,6 @@ function App() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [lastSources, setLastSources] = useState<ApiSource[]>([])
 
   const historyForApi = useMemo(
     () => messages.map(({ role, content }) => ({ role, content })),
@@ -75,7 +74,6 @@ function App() {
         ...current,
         { role: 'assistant', content: data.answer },
       ])
-      setLastSources(data.sources ?? [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error')
       setMessages((current) => [
@@ -133,21 +131,6 @@ function App() {
             </article>
           ))}
         </section>
-
-        {lastSources.length > 0 && (
-          <section className="sources">
-            <h3>Sources</h3>
-            <ul>
-              {lastSources.map((source, index) => (
-                <li key={`${source.chunk_id ?? index}`}>
-                  <strong>{source.source ?? 'Unknown source'}</strong>
-                  {source.page != null ? `, page ${source.page}` : ''}
-                  {source.preview ? ` - ${source.preview}` : ''}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
 
         {error && <p className="error">{error}</p>}
 

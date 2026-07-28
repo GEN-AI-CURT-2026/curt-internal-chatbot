@@ -18,104 +18,6 @@ except ImportError:
 # Load environment variables
 load_dotenv()
 
-RULEBOOK_TEST_CASES = [
-    {
-        "section": "A1.1.2",
-        "expected": "valid",
-        "query": "Validate this update: Formula Student has three entry classes: FS Class, FS-AI Class, and Concept Class.",
-    },
-    {
-        "section": "A1.2.2",
-        "expected": "valid",
-        "query": "Validate this update: Every vehicle must meet the requirements in Section T and its powertrain-specific section, such as CV, EV, or AFV.",
-    },
-    {
-        "section": "A2.2.1",
-        "expected": "invalid",
-        "query": "Validate this update: A vehicle may compete in Formula Student class in more than one competition year if it passes inspection.",
-    },
-    {
-        "section": "A2.2.3",
-        "expected": "valid",
-        "query": "Validate this update: A new vehicle must have a newly manufactured chassis with significant changes in the Primary Structure compared to its predecessor.",
-    },
-    {
-        "section": "A3.5.3",
-        "expected": "valid",
-        "query": "Validate this update: If there is a discrepancy between the rulebook and another official document, the rulebook takes priority.",
-    },
-    {
-        "section": "IN1.2.1",
-        "expected": "valid",
-        "query": "Validate this update: A vehicle must pass all parts of technical inspection before it can enter any dynamic event.",
-    },
-    {
-        "section": "IN1.4.1",
-        "expected": "valid",
-        "query": "Validate this update: For EV electrical inspection and accumulator inspection, the inspection responsible person must be an ESO.",
-    },
-    {
-        "section": "IN1.5.1",
-        "expected": "valid",
-        "query": "Validate this update: After technical inspection, the team may adjust tyre pressure, brake bias, winglet angles, and software calibration, but not move the complete aerodynamic device.",
-    },
-    {
-        "section": "IN7.1.3",
-        "expected": "valid",
-        "query": "Validate this update: The tilt test uses a 60 degree angle, maximum fluid levels, and the wheels must remain in contact with the surface.",
-    },
-    {
-        "section": "IN8.1.2",
-        "expected": "valid",
-        "query": "Validate this update: During vehicle weighing, oil and coolant circuits must be at maximum fill level, and the fuel tank must be empty for CV vehicles.",
-    },
-    {
-        "section": "IN11.1.2",
-        "expected": "valid",
-        "query": "Validate this update: In the EV brake test, the driver must switch off the tractive system and then brake using only the mechanical brakes.",
-    },
-    {
-        "section": "IN13.2.7",
-        "expected": "valid",
-        "query": "Validate this update: All drivers must be able to exit the vehicle in no more than 5 seconds during the Driver Egress Test.",
-    },
-    {
-        "section": "S2.3.4",
-        "expected": "invalid",
-        "query": "Validate this update: A BPP presentation can run for 12 minutes before any penalty is applied.",
-    },
-    {
-        "section": "S2.3.10",
-        "expected": "valid",
-        "query": "Validate this update: Teams will not be supplied with an internet connection during BPP judging.",
-    },
-    {
-        "section": "D7.5.4",
-        "expected": "valid",
-        "query": "Validate this update: During endurance driver change, the team gets three minutes to change the driver and one minute to restart the car.",
-    },
-    {
-        "section": "D7.6.9",
-        "expected": "valid",
-        "query": "Validate this update: If a vehicle cannot maintain lap times within 145 percent of the fastest lap time for the course, it must exit immediately.",
-    },
-    {
-        "section": "D7.7.5",
-        "expected": "valid",
-        "query": "Validate this update: If a vehicle has a restart problem after a red flag or at driver change, it has two minutes to restart the engine, enable the tractive system, or enter R2D.",
-    },
-    {
-        "section": "D9.1.5",
-        "expected": "valid",
-        "query": "Validate this update: Off-course means all four wheels are outside the track boundary or a required slalom gate is missed.",
-    },
-    {
-        "section": "D9.1.14",
-        "expected": "valid",
-        "query": "Validate this update: Vehicle-to-vehicle contact can lead to a time penalty or disqualification depending on the incident.",
-    },
-]
-
 class CURTRagPipeline:
     def __init__(self):
         """
@@ -308,6 +210,46 @@ class CURTRagPipeline:
             )
 
         return compressed_docs
+
+    def _sanitize_answer(self, answer: str) -> str:
+        """Convert model output into a single plain-text validation sentence."""
+        text = (answer or "").strip()
+
+        # Remove common markdown and noise the model may emit.
+        text = re.sub(r"`+", "", text)
+        text = re.sub(r"[*_]+", "", text)
+
+        unwanted_phrases = [
+            "I don't have that information in my knowledge base. You can contact CURT directly for more details.",
+            "I don't have that information in my knowledge base.",
+            "You can contact CURT directly for more details.",
+            "Please verify with official team documents.",
+            "*(Note:",
+            "(Note:",
+        ]
+        for phrase in unwanted_phrases:
+            text = text.replace(phrase, "")
+
+        # Drop any explicit source list appended by the model.
+        source_markers = ["\nSources:", "\n\nSources:", "\nSource:", "\n\nSource:"]
+        cut_points = [text.find(marker) for marker in source_markers if marker in text]
+        if cut_points:
+            text = text[: min(cut_points)].strip()
+
+        # Prefer the exact requested output if the model followed it.
+        pattern = re.search(
+            r"(This is an (?:valid|invalid) car update because ./n*?Source:\s*section\s*[^\n.]+(?:\.)? Citation: )",
+            text,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if pattern:
+            text = pattern.group(1).strip()
+
+        # Normalize whitespace and remove spaces before punctuation.
+        text = re.sub(r"\s+", " ", text).strip()
+        text = re.sub(r"\s+([.,:;!?])", r"\1", text)
+
+        return text
         
     def run(self, query: str, chat_history: List[Dict] = []) -> Dict[str, Any]:
         
@@ -316,6 +258,13 @@ class CURTRagPipeline:
         
         if prompts.is_off_topic(query):
             return {"answer": prompts.OFF_TOPIC_RESPONSE, "sources": [], "status": "off_topic"}
+
+        if prompts.is_vague_query(query):
+            return {
+                "answer": prompts.NEEDS_CLARIFICATION_RESPONSE,
+                "sources": [],
+                "status": "needs_clarification",
+            }
 
         expanded_query = self.expansion_chain.invoke({"query": query})
         print(f"Expanded Query: '{expanded_query}'")
@@ -355,9 +304,9 @@ class CURTRagPipeline:
         print(f"Verification: {check_result}")
 
         if check_result.strip().upper().startswith("HALLUCINATION"):
-            answer += "\n\n*(Note: I verified this answer against my database and found some parts might not be explicitly supported. Please verify with official team documents.)*"
+            print("Warning: generated answer may contain unsupported details.")
 
-        final_response = prompts.enhance_response_with_sources(answer, compressed_docs)
+        final_response = self._sanitize_answer(answer)
         return {
             "answer": final_response,
             "raw_answer": answer,
@@ -371,11 +320,6 @@ def take_input(input):
     return input
 
 
-def get_rulebook_test_inputs() -> List[str]:
-    """Return ready-made user inputs derived from the rulebook."""
-    return [case["query"] for case in RULEBOOK_TEST_CASES]
-
-
 def rrf_fusion(dense_ids, sparse_ids, k=60):
     """Reciprocal Rank Fusion merges ranked lists by rank position."""
     scores = {}
@@ -386,21 +330,9 @@ def rrf_fusion(dense_ids, sparse_ids, k=60):
     return sorted(scores, key=scores.get, reverse=True)
 
 
-def run_rulebook_test_suite(pipeline: CURTRagPipeline) -> None:
-    """Run the pipeline against the built-in rulebook test prompts."""
-    for idx, case in enumerate(RULEBOOK_TEST_CASES, 1):
-        print("\n" + "=" * 80)
-        print(f"TEST {idx}: {case['section']} | expected: {case['expected']}")
-        print(f"USER INPUT: {case['query']}")
-        result = pipeline.run(case["query"])
-        print("ANSWER:")
-        print(result["answer"])
-        print(f"STATUS: {result['status']}")
-
 if __name__ == "__main__":
     try:
         pipeline = CURTRagPipeline()
-        run_rulebook_test_suite(pipeline)
     except Exception as e:
         print(f"\nError: {e}")
         print("Ensure you have run 'python build_chroma.py' first!")

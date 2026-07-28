@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+import re
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,6 +45,7 @@ class ChatRequest(BaseModel):
 
 class SourceItem(BaseModel):
     source: Optional[str] = None
+    section: Optional[str] = None
     page: Optional[int] = None
     chunk_id: Optional[int] = None
     preview: Optional[str] = None
@@ -64,6 +66,11 @@ def get_pipeline() -> CURTRagPipeline:
     return pipeline
 
 
+def extract_section_label(text: str) -> Optional[str]:
+    match = re.search(r"\b(?:[A-Z]{1,3}\d+(?:\.\d+)*|IN\d+(?:\.\d+)*)\b", text or "")
+    return match.group(0) if match else None
+
+
 @app.get("/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
@@ -77,9 +84,13 @@ def chat(request: ChatRequest) -> Dict[str, Any]:
     sources: List[SourceItem] = []
     for doc in result.get("sources", []):
         metadata = getattr(doc, "metadata", {}) or {}
+        preview = (getattr(doc, "page_content", "") or "")[:180]
+        raw_source = metadata.get("source")
+        source_name = Path(raw_source).name if raw_source else None
         sources.append(
             SourceItem(
-                source=metadata.get("source"),
+                source=source_name,
+                section=metadata.get("section") or extract_section_label(preview),
                 page=metadata.get("page"),
                 chunk_id=metadata.get("chunk_id"),
                 preview=(getattr(doc, "page_content", "") or "")[:180],

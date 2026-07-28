@@ -152,19 +152,6 @@ class ChromaDBBuilder:
 
         print("Step 5: Verifying database...")
         
-        # print("\n  Testing retrieval with similarity search...")
-        # test_query = "What is CURT?"
-        # test_results = vectorstore.similarity_search(test_query, k=3)
-        
-        # print(f"Retrieved {len(test_results)} relevant documents\n")
-        
-        # if test_results:
-        #     print("  Sample result preview:")
-        #     sample = test_results[0].page_content[:200]
-        #     source = Path(test_results[0].metadata.get("source", "unknown")).name
-        #     print(f"    Source: {source}")
-        #     print(f"    Content: '{sample}...'\n")
-        
         print("="*60)
         print("✓ CHROMADB BUILD COMPLETE!")
         print("="*60)
