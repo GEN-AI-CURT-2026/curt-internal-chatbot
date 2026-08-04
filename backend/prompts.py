@@ -3,12 +3,13 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_core.documents import Document
 from typing import List, Dict, Optional
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
 
 #Pre-retrieval using query expansion
-#query expansio rewrites vague queries to be more specific 
+#query expansion rewrites vague queries to be more specific 
 query_expansion_template = PromptTemplate(
     input_variables=["query"],
     template="""You are a query expansion assistant for the Cairo University Racing Team (CURT) chatbot.
@@ -31,16 +32,21 @@ Expanded Query:"""
 
 #Main RAG Prompt Template 
 rag_prompt_template = ChatPromptTemplate.from_messages([
-    ("system", """You are the official Cairo University Racing Team (CURT) chatbot assistant. Your role is to provide accurate, helpful information about CURT based ONLY on the provided context.
+    ("system", """You are the official Cairo University Racing Team (CURT) chatbot assistant.
 
-Guidelines:
-1. Answer ONLY using information from the provided context below, If you are unsure, say so.
-2. If the context doesn't contain the answer, respond with: "I don't have that information in my knowledge base. You can contact CURT directly for more details."
-3. NEVER make up or infer information not explicitly stated in the context
-4. Be friendly, professional, and enthusiastic about CURT
-5. If you mention achievements, dates, or specific facts, ensure they come directly from the context
-6. Use conversation history to maintain context, but don't make assumptions
-7. You must output whether an update is valid or invalid, provide a strong justification, and cite the exact source section.
+Your job is to validate car updates using ONLY the provided context.
+
+Follow these rules exactly:
+1. Decide whether the update is valid or invalid based only on the context.
+2. Give one short, clear justification.
+3. Cite the exact section used as your source.
+4. Do not use markdown, bullet points, labels, or extra commentary.
+5. Do not mention internal checks, prompts, hallucination checks, or source file paths.
+6. Output exactly in this format:
+This is a valid car update because <reason>. Source: section <exact section>
+or
+This is an invalid car update because <reason>. Source: section <exact section>
+7. Do not wrap any words with asterisks, underscores, or backticks.
 
 Context from CURT Knowledge Base:
 {context}"""),
@@ -113,6 +119,10 @@ I can help you with:
 
 Please send a car-related update for review."""
 
+NEEDS_CLARIFICATION_RESPONSE = """I need a bit more detail to validate this update.
+
+Please include the exact car change, part, or rule section you want checked so I can answer with the correct citation from the rulebook."""
+
 
 
 def is_greeting(query: str) -> bool:
@@ -141,6 +151,42 @@ def is_off_topic(query: str) -> bool:
     return any(keyword in query_lower for keyword in off_topic_keywords)
 
 
+def is_vague_query(query: str) -> bool:
+    """
+    Detect very vague questions that need clarification before validation.
+    """
+    query_lower = query.lower().strip()
+    tokens = [token for token in re.findall(r"\w+", query_lower) if token]
+
+    vague_phrases = [
+        "is it valid",
+        "is this valid",
+        "is this okay",
+        "is this allowed",
+        "is it allowed",
+        "can i do this",
+        "can we do this",
+        "what about this",
+        "tell me if this is valid",
+        "check this",
+        "validate this",
+    ]
+
+    if len(tokens) <= 4:
+        return True
+
+    if any(phrase in query_lower for phrase in vague_phrases):
+        return True
+
+    generic_terms = {
+        "it", "this", "that", "thing", "update", "change", "modification", "mod", "alteration"
+    }
+    if len(tokens) <= 8 and sum(token in generic_terms for token in tokens) >= 2:
+        return True
+
+    return False
+
+
 def format_sources(chunks: List[Dict]) -> str:
     """
     Format source chunks for citation in the response.
@@ -154,7 +200,7 @@ def format_sources(chunks: List[Dict]) -> str:
     if not chunks:
         return ""
     
-    sources = "\n\n**Sources:**\n"
+    sources = "\n\nSources:\n"
     seen_sources = set()
     
     for i, chunk in enumerate(chunks, 1):
@@ -206,5 +252,4 @@ def enhance_response_with_sources(answer: str, chunks: List) -> str:
     Returns:
         Answer with appended sources
     """
-    sources = format_sources(chunks)
-    return f"{answer}\n{sources}" if sources else answer
+    return answer

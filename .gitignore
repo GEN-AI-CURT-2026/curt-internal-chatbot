@@ -1,2 +1,6 @@
 .env
 /backend/chroma
+/backend/__pycache__
+backend/bm25_index.pkl
+frontend/node_modules/@babel/core/lib/config/helpers/deep-array.js.map
+/frontend/node_modules
