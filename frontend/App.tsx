@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 type ChatMessage = {
   role: 'user' | 'assistant'
@@ -7,6 +7,7 @@ type ChatMessage = {
 
 type ApiSource = {
   source?: string | null
+  section?: string | null
   page?: number | null
   chunk_id?: number | null
   preview?: string | null
@@ -18,6 +19,7 @@ type ChatReply = {
   status: string
   expanded_query?: string | null
   sources: ApiSource[]
+  session_id: string
 }
 
 function App() {
@@ -29,13 +31,11 @@ function App() {
     },
   ])
   const [input, setInput] = useState('')
+  const [sessionId, setSessionId] = useState(
+    () => localStorage.getItem('curt-session-id') ?? crypto.randomUUID(),
+  )
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  const historyForApi = useMemo(
-    () => messages.map(({ role, content }) => ({ role, content })),
-    [messages],
-  )
 
   async function sendMessage(content: string) {
     const trimmed = content.trim()
@@ -60,7 +60,7 @@ function App() {
         },
         body: JSON.stringify({
           message: trimmed,
-          history: historyForApi,
+          session_id: sessionId,
         }),
       })
 
@@ -69,6 +69,8 @@ function App() {
       }
 
       const data = (await response.json()) as ChatReply
+      localStorage.setItem('curt-session-id', data.session_id)
+      setSessionId(data.session_id)
 
       setMessages((current) => [
         ...current,

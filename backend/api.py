@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import re
@@ -11,11 +12,15 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 from rag_pipeline import CURTRagPipeline
+from memory_manager import MemoryManager
 
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
+MEMORY_DATABASE = BASE_DIR / "conversation_memory.sqlite3"
+MEMORY_WINDOW_SIZE = 3
+memory_manager = MemoryManager(MEMORY_DATABASE, window_size=MEMORY_WINDOW_SIZE)
 
 app = FastAPI(title="CURT Internal Chatbot API")
 
@@ -40,7 +45,9 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
-    history: List[ChatMessage] = Field(default_factory=list)
+    session_id: Optional[str] = Field(default=None, max_length=128)
+    # Accepted for backwards compatibility. The server-side N=3 buffer is authoritative.
+    history: List[ChatMessage] = Field(default_factory=list, exclude=True)
 
 
 class SourceItem(BaseModel):
@@ -57,6 +64,8 @@ class ChatResponse(BaseModel):
     status: str
     expanded_query: Optional[str] = None
     sources: List[SourceItem] = []
+    session_id: str
+    memory_messages: int
 
 
 def get_pipeline() -> CURTRagPipeline:
@@ -78,8 +87,12 @@ def health() -> Dict[str, str]:
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest) -> Dict[str, Any]:
-    history = [msg.model_dump() for msg in request.history]
+    session_id = request.session_id or str(uuid.uuid4())
+    # Retrieve before adding the current message so there is no duplicate user turn.
+    history = memory_manager.get_recent_history(session_id)
     result = get_pipeline().run(request.message, chat_history=history)
+    memory_manager.append_message(session_id, "user", request.message)
+    memory_manager.append_message(session_id, "assistant", result.get("answer", ""))
 
     sources: List[SourceItem] = []
     for doc in result.get("sources", []):
@@ -103,7 +116,15 @@ def chat(request: ChatRequest) -> Dict[str, Any]:
         "status": result.get("status", "success"),
         "expanded_query": result.get("expanded_query"),
         "sources": sources,
+        "session_id": session_id,
+        "memory_messages": memory_manager.get_stats(session_id)["messages_in_memory"],
     }
+
+
+@app.delete("/sessions/{session_id}")
+def reset_session(session_id: str) -> Dict[str, str]:
+    memory_manager.clear_session(session_id)
+    return {"status": "cleared", "session_id": session_id}
 
 
 if __name__ == "__main__":

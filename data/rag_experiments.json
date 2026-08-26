@@ -1,0 +1,4 @@
+{"experiments":[
+  {"name":"dense-large","embedding_model":"text-embedding-3-large","chroma_dir":"backend/chroma","bm25_path":"backend/bm25_index.pkl","retrieval_mode":"dense"},
+  {"name":"hybrid-large","embedding_model":"text-embedding-3-large","chroma_dir":"backend/chroma","bm25_path":"backend/bm25_index.pkl","retrieval_mode":"hybrid"}
+]}

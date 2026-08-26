@@ -1,0 +1,702 @@
+[
+  {
+    "expected_section": "EV6.3.4",
+    "source_page": 9,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: 1.1 Clarified that IMD response value must not be changed after",
+    "id": "invalid-001"
+  },
+  {
+    "expected_section": "EV7.2.2",
+    "source_page": 9,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: 1.1 Clarified that closing SDC must not re-activate charging if it has been",
+    "id": "invalid-002"
+  },
+  {
+    "expected_section": "T2.4.5",
+    "source_page": 36,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Extended or composite wheel studs are prohibited.",
+    "id": "invalid-003"
+  },
+  {
+    "expected_section": "T2.5.3",
+    "source_page": 37,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Tyre warmers are not allowed.",
+    "id": "invalid-004"
+  },
+  {
+    "expected_section": "T2.5.5",
+    "source_page": 37,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Single-use plastic tyre covers, e.g. cling film, are prohibited.",
+    "id": "invalid-005"
+  },
+  {
+    "expected_section": "T2.6.1",
+    "source_page": 37,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Steering systems using cables or belts for actuation are prohibited. [DV ONLY] This does not",
+    "id": "invalid-006"
+  },
+  {
+    "expected_section": "T3.2.7",
+    "source_page": 39,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Any welded seams shape must not be mechanically altered in any way.",
+    "id": "invalid-007"
+  },
+  {
+    "expected_section": "T3.10.2",
+    "source_page": 43,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: In side view the main hoop and the main hoop braces must not lie on t he same side of a",
+    "id": "invalid-008"
+  },
+  {
+    "expected_section": "T3.19.4",
+    "source_page": 51,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Vehicles with aerodynamic devices and/or sensors in front of the AIP must not exceed the",
+    "id": "invalid-009"
+  },
+  {
+    "expected_section": "T4.6.3",
+    "source_page": 55,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Any seat mounting bracket or other support structure must not punch through the seat",
+    "id": "invalid-010"
+  },
+  {
+    "expected_section": "T5.3.3",
+    "source_page": 58,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Harnesses, belts and straps must not pass thr ough a firewall, i.e. all harness attachment",
+    "id": "invalid-011"
+  },
+  {
+    "expected_section": "T5.4.4",
+    "source_page": 58,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: If eye bolts are used , the Anti -Submarine Belt mounts must not share the Lap Belt",
+    "id": "invalid-012"
+  },
+  {
+    "expected_section": "T5.5.6",
+    "source_page": 59,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Any bracket used to mount the shoulder harness must not be able to contact the driver in",
+    "id": "invalid-013"
+  },
+  {
+    "expected_section": "T6.1.4",
+    "source_page": 62,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: “Brake-by-wire” systems are prohibited.",
+    "id": "invalid-014"
+  },
+  {
+    "expected_section": "T6.1.5",
+    "source_page": 62,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Unarmoured plastic brake lines are prohibited.",
+    "id": "invalid-015"
+  },
+  {
+    "expected_section": "T6.2.2",
+    "source_page": 62,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Repeated actuation of the switch must not close the shutdown circuit, and it must be",
+    "id": "invalid-016"
+  },
+  {
+    "expected_section": "T11.1.6",
+    "source_page": 72,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: [EV ONLY] The LVS must not use orange wiring or conduit.",
+    "id": "invalid-017"
+  },
+  {
+    "expected_section": "T11.2.4",
+    "source_page": 72,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Master switches must be rigidly mounted to the vehicle and must not be removed during",
+    "id": "invalid-018"
+  },
+  {
+    "expected_section": "T11.4.6",
+    "source_page": 73,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Shutdown buttons must be rigidly mounted to the vehicle and must not be removed during",
+    "id": "invalid-019"
+  },
+  {
+    "expected_section": "T11.5.3",
+    "source_page": 73,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The device must not include any semiconductor components.",
+    "id": "invalid-020"
+  },
+  {
+    "expected_section": "T11.6.10",
+    "source_page": 74,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: [EV ONLY] The BSPD including all required sensors must not be installed inside the TSAC.",
+    "id": "invalid-021"
+  },
+  {
+    "expected_section": "T13.3.11",
+    "source_page": 85,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: All driver equipment covered in T13.3: must be in good condition. Specifically, it must not",
+    "id": "invalid-022"
+  },
+  {
+    "expected_section": "T13.4.3",
+    "source_page": 85,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Aqueous Film Forming Foam (AFFF) fire extinguishers are prohibited. Halon extinguishers",
+    "id": "invalid-023"
+  },
+  {
+    "expected_section": "T14.2.1",
+    "source_page": 87,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Teleoperated driving is not allowed.",
+    "id": "invalid-024"
+  },
+  {
+    "expected_section": "T14.8.1",
+    "source_page": 89,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: It is not allowed to remove any parts of the autonomous system for dynamic events.",
+    "id": "invalid-025"
+  },
+  {
+    "expected_section": "T15.1.5",
+    "source_page": 92,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Brake master cylinders must not be connected in series.",
+    "id": "invalid-026"
+  },
+  {
+    "expected_section": "T15.1.9",
+    "source_page": 92,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The use of push -in fittings is prohibited in funct ion critical pneumatic circuits of the ASB",
+    "id": "invalid-027"
+  },
+  {
+    "expected_section": "CV1.2.4",
+    "source_page": 94,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: [DV ONLY] The AS must not be able to (re-)start the engine.",
+    "id": "invalid-028"
+  },
+  {
+    "expected_section": "CV1.5.6",
+    "source_page": 95,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Throttle cables or rods must have smooth operation an d must not have the possibility of",
+    "id": "invalid-029"
+  },
+  {
+    "expected_section": "CV1.8.3",
+    "source_page": 97,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Plenums anywhere upstream of the throttle body are prohibited. A “plenum” is any tank or",
+    "id": "invalid-030"
+  },
+  {
+    "expected_section": "CV2.3.3",
+    "source_page": 98,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The fuel tank must not touch any part of the vehicle other than its mounting and parts of",
+    "id": "invalid-031"
+  },
+  {
+    "expected_section": "CV2.3.6",
+    "source_page": 99,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The fuel tank, by design, must not have a variable capacity.",
+    "id": "invalid-032"
+  },
+  {
+    "expected_section": "CV2.6.3",
+    "source_page": 100,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Above the lowest point of the sight tube, the filler neck must not be angles more than 30°",
+    "id": "invalid-033"
+  },
+  {
+    "expected_section": "CV3.1.2",
+    "source_page": 102,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The exhaust outlet(s) must not extend more than 450mm behind the centreline of the rear",
+    "id": "invalid-034"
+  },
+  {
+    "expected_section": "CV3.1.5",
+    "source_page": 102,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The use of rubber mounts directly between the exhaust and exhaust clamp is prohibited for",
+    "id": "invalid-035"
+  },
+  {
+    "expected_section": "CV5.1.5",
+    "source_page": 104,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Transferring energy to the HSC from any other electrical storage system is prohibited during",
+    "id": "invalid-036"
+  },
+  {
+    "expected_section": "CV5.3.3",
+    "source_page": 105,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: If no HSF is submitted, or the HSF is not approved, the HSC must not be fitted to the vehicle",
+    "id": "invalid-037"
+  },
+  {
+    "expected_section": "EV2.2.1",
+    "source_page": 107,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The TS power, measured by the Energy Meter, must not exceed +80kW.",
+    "id": "invalid-038"
+  },
+  {
+    "expected_section": "EV2.2.3",
+    "source_page": 107,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Supplying power to the motor(s) such that the car is driven in reverse is prohibited.",
+    "id": "invalid-039"
+  },
+  {
+    "expected_section": "EV3.2.2",
+    "source_page": 108,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The continuous current rating of the overcurrent protection must not be greater than the",
+    "id": "invalid-040"
+  },
+  {
+    "expected_section": "EV3.2.5",
+    "source_page": 108,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: All overcurrent protection devices that are part of the TS must not rely on programmable",
+    "id": "invalid-041"
+  },
+  {
+    "expected_section": "EV4.1.4",
+    "source_page": 109,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Fans with >50W power must not be connected to the TS.",
+    "id": "invalid-042"
+  },
+  {
+    "expected_section": "EV4.4.5",
+    "source_page": 110,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: In side or front view any part of the TS must not projec t below the lower surface of the",
+    "id": "invalid-043"
+  },
+  {
+    "expected_section": "EV4.5.12",
+    "source_page": 111,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: All TS connections must not include compressible material such as plastic in the stack -up",
+    "id": "invalid-044"
+  },
+  {
+    "expected_section": "EV4.6.3",
+    "source_page": 112,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The Energy Meter must not be installed within the TSAC.",
+    "id": "invalid-045"
+  },
+  {
+    "expected_section": "EV4.9.3",
+    "source_page": 113,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Fusing of the main current discharge path is prohibited.",
+    "id": "invalid-046"
+  },
+  {
+    "expected_section": "EV4.10.1",
+    "source_page": 113,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The vehicle must include a single TSAL that must indicate the TS status. The TSAL must not",
+    "id": "invalid-047"
+  },
+  {
+    "expected_section": "EV4.10.15",
+    "source_page": 115,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The latching required by EV4.10.13 and EV4.10.14 must not be triggered during normal",
+    "id": "invalid-048"
+  },
+  {
+    "expected_section": "EV4.11.4",
+    "source_page": 115,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Closing the shutdown circuit by any part defined in EV6.1.2 must not (re-)activate the TS.",
+    "id": "invalid-049"
+  },
+  {
+    "expected_section": "EV4.11.5",
+    "source_page": 115,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: [DV ONLY] The AS must not be able to (re-)activate the TS.",
+    "id": "invalid-050"
+  },
+  {
+    "expected_section": "EV4.12.4",
+    "source_page": 116,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The vehicle must not make any other sounds similar to the ready-to-drive sound.",
+    "id": "invalid-051"
+  },
+  {
+    "expected_section": "EV5.2.2",
+    "source_page": 117,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Fuel cells are prohibited.",
+    "id": "invalid-052"
+  },
+  {
+    "expected_section": "EV5.3.2",
+    "source_page": 117,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Each TS accumulator segment must not exceed:",
+    "id": "invalid-053"
+  },
+  {
+    "expected_section": "EV5.4.2",
+    "source_page": 118,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: LVS must not be included in the TSAC except where inherently required. Exceptions",
+    "id": "invalid-054"
+  },
+  {
+    "expected_section": "EV5.5.11",
+    "source_page": 120,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: Tabs of pouch cells must not carry mechanical loads and must not press into the pouch .",
+    "id": "invalid-055"
+  },
+  {
+    "expected_section": "EV5.5.17",
+    "source_page": 121,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: External o penings for cooling and connected cooling ducts must not point towards the",
+    "id": "invalid-056"
+  },
+  {
+    "expected_section": "EV6.1.10",
+    "source_page": 125,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The shutdown buttons, the BOTS, the TSMS and all interlocks must not act through any",
+    "id": "invalid-057"
+  },
+  {
+    "expected_section": "EV6.3.4",
+    "source_page": 125,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The IMD response value must not be changed after electrical inspection.",
+    "id": "invalid-058"
+  },
+  {
+    "expected_section": "EV7.2.1",
+    "source_page": 127,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: must not (re-)activate charging.",
+    "id": "invalid-059"
+  },
+  {
+    "expected_section": "EV8.1.9",
+    "source_page": 128,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The TSAC(s) must not protrude outside the edges of the hand cart.",
+    "id": "invalid-060"
+  },
+  {
+    "expected_section": "EV8.1.12",
+    "source_page": 128,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The overall floor space used by the fully loaded hand cart must not e xceed 1200mm x",
+    "id": "invalid-061"
+  },
+  {
+    "expected_section": "EV9.1.2",
+    "source_page": 129,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The ESF must follow the template provided on the Formula Student website, must not",
+    "id": "invalid-062"
+  },
+  {
+    "expected_section": "IN9.2.4",
+    "source_page": 142,
+    "expected_verdict": "invalid",
+    "query": "Validate this proposed vehicle update: The vehicle must not be in ready-to-drive mode, see EV4.11.",
+    "id": "invalid-063"
+  },
+  {
+    "expected_section": "T4.5.5",
+    "source_page": 7,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.0 Non-steel harness attachments must now be physically tested.",
+    "id": "valid-064"
+  },
+  {
+    "expected_section": "T6.1.7",
+    "source_page": 8,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.0 Clarified that brake system must be within the Surface Envelope.",
+    "id": "valid-065"
+  },
+  {
+    "expected_section": "T14.12.4",
+    "source_page": 8,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.0 Autonomous Missions must be selectable without the use of an",
+    "id": "valid-066"
+  },
+  {
+    "expected_section": "T15.2.2",
+    "source_page": 8,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified that EBS must be directly supplied by LVMS, ASMS, RES",
+    "id": "valid-067"
+  },
+  {
+    "expected_section": "EV5.4.6",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified rule that wiring inside TSAC must adhere to EV4.5.2, EV4.5.3,",
+    "id": "valid-068"
+  },
+  {
+    "expected_section": "EV5.4.7",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified that TSAC voltage indicator must be illuminated continuously",
+    "id": "valid-069"
+  },
+  {
+    "expected_section": "EV5.5.1",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.0 All TSACs must be inside the Primary Structure (T1.1.12)",
+    "id": "valid-070"
+  },
+  {
+    "expected_section": "EV5.8.8",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Simplified rule – teams must demonstrate reasons for choosing",
+    "id": "valid-071"
+  },
+  {
+    "expected_section": "EV6.1.5",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified that when SDC is opened, the precharge relay must also be",
+    "id": "valid-072"
+  },
+  {
+    "expected_section": "EV7.1.5",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified that AMS must be able to open SDC",
+    "id": "valid-073"
+  },
+  {
+    "expected_section": "EV7.1.7",
+    "source_page": 9,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Clarified that IMD must be able to open SDC and simplified wording",
+    "id": "valid-074"
+  },
+  {
+    "expected_section": "EV8.1.5",
+    "source_page": 10,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Added rule that hand cart must be easy to move when the brake is",
+    "id": "valid-075"
+  },
+  {
+    "expected_section": "EV8.1.7",
+    "source_page": 10,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.1 Added clarification that hand cart firewall must adequately protect",
+    "id": "valid-076"
+  },
+  {
+    "expected_section": "IN11.1.2",
+    "source_page": 10,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: 1.0 Clarified that Cockpit Master Switch must be used.",
+    "id": "valid-077"
+  },
+  {
+    "expected_section": "T2.1.1",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The vehicle must be designed and fabricated in accordance with good engineering",
+    "id": "valid-078"
+  },
+  {
+    "expected_section": "T2.1.2",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The vehicle must be open -wheeled, single seat and open cockpit (a formula style body)",
+    "id": "valid-079"
+  },
+  {
+    "expected_section": "T2.1.3",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Open wheel vehicles must satisfy the following (see also Figure 4):",
+    "id": "valid-080"
+  },
+  {
+    "expected_section": "T2.2.1",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: There must be no openings through the bodywork into the driver compartment other than",
+    "id": "valid-081"
+  },
+  {
+    "expected_section": "T2.2.2",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Enclosed chassis structures and structures between the chassis and th e ground must have",
+    "id": "valid-082"
+  },
+  {
+    "expected_section": "T2.2.3",
+    "source_page": 35,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: All edges of the bodywork that co uld come into contact with a pedestrian must have a",
+    "id": "valid-083"
+  },
+  {
+    "expected_section": "T2.2.4",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The bodywork in front of the front wheels must have a radius of at least 38mm extending",
+    "id": "valid-084"
+  },
+  {
+    "expected_section": "T2.3.1",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The vehicle must be equipped with fully operational front and rear suspension systems",
+    "id": "valid-085"
+  },
+  {
+    "expected_section": "T2.3.3",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: All suspension mounting points must be visible at technical inspection, either by direct view",
+    "id": "valid-086"
+  },
+  {
+    "expected_section": "T2.4.1",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Any wheel mounting system that uses a single retaining nut must incorporate a device to",
+    "id": "valid-087"
+  },
+  {
+    "expected_section": "T2.4.2",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Standard wheel lug bolts and studs must be made of steel or titanium and are considered",
+    "id": "valid-088"
+  },
+  {
+    "expected_section": "T2.4.3",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Aluminium wheel nuts may be used, but they must be hard anodized and in pristine",
+    "id": "valid-089"
+  },
+  {
+    "expected_section": "T2.4.7",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The wheels for dry tyres and wet tyres may be different but must be the same for all dry",
+    "id": "valid-090"
+  },
+  {
+    "expected_section": "T2.5.1",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Vehicles must have two types of tyres as follows:",
+    "id": "valid-091"
+  },
+  {
+    "expected_section": "T2.5.2",
+    "source_page": 36,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Tyres on the same axle must have the same manufacturer, size and compound.",
+    "id": "valid-092"
+  },
+  {
+    "expected_section": "T2.6.2",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering wheel must directly mechanically actuate the front wheels.",
+    "id": "valid-093"
+  },
+  {
+    "expected_section": "T2.6.3",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering system must have positive steering stops that prevent the steering linkages",
+    "id": "valid-094"
+  },
+  {
+    "expected_section": "T2.6.5",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering wheel must be attached to the column with a quick disconnect. The driver",
+    "id": "valid-095"
+  },
+  {
+    "expected_section": "T2.6.6",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering wheel must be no more than 250mm rearward of the front hoop. This",
+    "id": "valid-096"
+  },
+  {
+    "expected_section": "T2.6.7",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering wheel must have a continuous perimeter that is near circular or near oval. The",
+    "id": "valid-097"
+  },
+  {
+    "expected_section": "T2.6.8",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: In any angular position, the top of the steering wheel must be no higher than the top-most",
+    "id": "valid-098"
+  },
+  {
+    "expected_section": "T2.6.9",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: The steering rack must be mechanically attached to the Primary Structure.",
+    "id": "valid-099"
+  },
+  {
+    "expected_section": "T2.6.10",
+    "source_page": 37,
+    "expected_verdict": "valid",
+    "query": "Validate this proposed compliant vehicle update: Joints between all components attaching the steering wheel to the steering rack must be",
+    "id": "valid-100"
+  }
+]
