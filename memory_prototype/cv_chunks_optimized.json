@@ -1,0 +1,142 @@
+[
+  {
+    "content": "Khaled Ashraf Wafa\nkidoabulwafa@gmail.com — linkedin.com/in/KhaledAshraf — +20-101-214-5449 — Dokki, Giza,",
+    "metadata": {
+      "section": "Personal_Info",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 106
+  },
+  {
+    "content": "• IELTS (CEFR B2) — British Council Aug. 2021 • SolidWorks Basics — Engovation Aug. 2023 • Embedded Systems (AVR) — IMT School Jan. 2025 • Undergraduate Engineering Research Mathematics Forum (UMRF) — TCCD May. 2025 • Robotics Section Season Certificate — ASME May. 2025 • Classic Control Certificate — HA Group Aug. 2025 • PLC Basic Programming — HA Group Aug. 2025 • Electric Motor and Drive Programming — HA Group Aug. 2025",
+    "metadata": {
+      "section": "Certificates",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 426
+  },
+  {
+    "content": "• Logic Gate Calculator — Logisim, Quartus, breadboard prototyping Dec. 2023 – Jan. 2024\nBuilt a functional calculator using basic logic gates, validated on Quartus and breadboard circuits.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 0
+    },
+    "content_length": 189
+  },
+  {
+    "content": "• Painting for Kids App — C++, OOP Apr. 2024 – May. 2024\nDeveloped an interactive GUI application for children’s art activities using OOP principles.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 1
+    },
+    "content_length": 149
+  },
+  {
+    "content": "• Clinic Management System — C, Embedded systems, Eclipse Sep. 2024\nImplemented a patient record system using linked lists in C for embedded environments. • 3 Jaw-Bearing Puller (Inverse Design) — SolidWorks Dec. 2024\nReverse-engineered and modeled a bearing puller applying mechanical design principles.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 2
+    },
+    "content_length": 304
+  },
+  {
+    "content": "• Autonomous RC car — AVR, C programming, ultrasonic sensors, HC-05 Dec. 2024 – Jan. 2025\nDesigned a dual-mode RC car with autonomous navigation and Bluetooth remote control.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 3
+    },
+    "content_length": 174
+  },
+  {
+    "content": "• Smart Watch — Assembly, TFT LCD, sensors, blue pill controller (ARM) Jan. 2025\nDesigned a dual-mode RC car with autonomous navigation and Bluetooth remote control.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 4
+    },
+    "content_length": 165
+  },
+  {
+    "content": "• Sumo Robot Competition — SolidWorks, ESP32 controller Feb. 2025\nBuilt a competition-ready robot with custom chassis and real-time motor control.",
+    "metadata": {
+      "section": "Projects",
+      "source": "CV",
+      "document_type": "CV_Project",
+      "project_index": 5
+    },
+    "content_length": 146
+  },
+  {
+    "content": "Bachelor of Engineering, Mechatronics Department Oct. 2022 – Present\nSenior 1 Engineer. Expected Graduation: July 2027.",
+    "metadata": {
+      "section": "Education",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 119
+  },
+  {
+    "content": "• Programming & Embedded: C, C++, Python, Arduino C, AVR, PWM, Sensors integration • Hardware & Electronics: PCB design, Proteus, Logisim, Quartus, Soldering, 74xx ICs, Bread- boarding, Motor Drivers • CAD/Simulation: SolidWorks, Adams, GIM • Tools&Platforms: VSCode,Eclipse,PyCharm,MATLAB,Simulink,Notion,Wordpress,Microsoft",
+    "metadata": {
+      "section": "Skills",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 325
+  },
+  {
+    "content": "• ASME Robotics Section Member Mar. 2025 – Present\nLearning and applying ROS2 in robotics and participating in competitions. • DOSS Member – GOC Team Apr. 2025 – Sep 2025\nFacilitated partnerships with industry professionals to conduct soft skills sessions, collaborated with\nengineers and HR specialists, and helped bridge academic training with workplace expectations. • CURT Member – Gen AI Team Sep. 2025 – Present",
+    "metadata": {
+      "section": "Extracurricular Activities",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 417
+  },
+  {
+    "content": "Applied Generative AI and NLP to develop a chatbot trained on 50 pages of competition rules,\nstreamlining access for CURT members and enhancing team efficiency and compliance.",
+    "metadata": {
+      "section": "Extracurricular Activities",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 175
+  },
+  {
+    "content": "• 13th Undergraduate Mathematics Research Forum, Cairo University Feb. 2025 – May 2025\nAnalyzed solar energy performance under varying weather conditions. • Sumo Robot Competition in ERU Feb. 2025\nDesigned and fabricated a custom robot, programmed motor control, and competed against 54 teams in the final tournament. • Best Member Award – Robotics Team (ASME) Sep. 2025",
+    "metadata": {
+      "section": "Awards & Achievements",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 370
+  },
+  {
+    "content": "Recognized for consistent contribution, task commitment, and initiative, including public speaking opportunities. • Stepping Up Award – Robotics Team (ASME) Sep. 2025\nPromoted from member to vice head within 5 months for leadership and outstanding performance.",
+    "metadata": {
+      "section": "Awards & Achievements",
+      "source": "CV",
+      "document_type": "CV_Section",
+      "chunk_strategy": "recursive"
+    },
+    "content_length": 260
+  }
+]
